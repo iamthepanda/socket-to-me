@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var WebSocketServer = require('websocket').server;
 var http = require('http');
+var connections = [];
 
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
@@ -22,7 +23,7 @@ wsServer = new WebSocketServer({
 });
 
 function originIsAllowed(origin) {
-  
+
   // put logic here to detect whether the specified origin is allowed.
   return true;
 }
@@ -36,12 +37,16 @@ wsServer.on('request', function(request) {
     }
 
     var connection = request.accept('direction-protocol', request.origin);
+    connections.push(connection);
+
     console.log((new Date()) + ' Connection accepted.');
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             var dir = message.utf8Data;
-            connection.sendUTF(dir);
+            for(i in connections)
+                i.sendUTF(dir);
+            //connection.sendUTF(dir);
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
