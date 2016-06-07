@@ -1,10 +1,11 @@
-var socket = new WebSocket("ws://localhost:8080/", "direction-protocol")
+var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
 socket.onopen = function (event) {
   console.log("Hi")
   socket.send("Connected!");
 }
 socket.onmessage = function (event) {
   console.log(event);
+  $("#move").text(event.data);
 }
 
 window.onkeydown = function(e) {
