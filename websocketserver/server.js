@@ -10,7 +10,7 @@ var buffer = fs.readFileSync("log.txt", 'utf8', (err, data)=> {
   }
   buffer = data;
 });
-// WriteFile();
+
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
@@ -47,37 +47,38 @@ wsServer.on('request', function(request) {
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
 
-        fs.readFileSync("log.txt", 'utf8', (err, data)=> {
-          if (err) {
-            throw err;
-          }
+        // fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+        //   if (err) {
+        //     throw err;
+        //   }
 
-          buffer = data;
-            console.log("dkjbdfk");
-                connection.sendUTF(data);
-        });
+        //   buffer = data;
+        //     console.log("dkjbdfk");
+        //         connection.sendUTF(data);
+        // });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
-            connection.sendUTF(message.utf8Data);
-            // fs.readFileSync("log.txt", 'utf8', (err, data)=> {
-            //   if (err) {
-            //     throw err;
-            //   }
-            //   buffer = data;
-            // });
-
-            fs.readFile("log.txt", 'utf8', (err, data)=> {
+            fs.readFileSync("log.txt", 'utf8', (err, data)=> {
               if (err) {
                 throw err;
               }
+              buffer = data;
             });
+
+            // fs.readFile("log.txt", 'utf8', (err, data)=> {
+            //   if (err) {
+            //     throw err;
+            //   }
+              // buffer +=data;
+            // });
             buffer += "\n" + message.utf8Data;
             fs.writeFile("log.txt", buffer, function(err) {
                 if(err) {
                     return console.log(err);
                 }
             });
+            connection.sendUTF(buffer);
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
@@ -97,7 +98,7 @@ wsServer.on('request', function(request) {
             
         }
         if(message.utf8Data == 'get-chat'){
-            connection.send("hsodfljhbvsdf");
+            connection.send(buffer);
         }
     });
     connection.on('close', function(reasonCode, description) {

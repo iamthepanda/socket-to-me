@@ -1,13 +1,18 @@
 // var socket = new WebSocket("ws://10.143.254.4:8080/", "echo-protocol")
 // var socket = new WebSocket("ws://10.143.183.69:8080/", "echo-protocol")
+// var socket = new WebSocket("ws://192.168.0.15:8080/", "echo-protocol")
 var socket = new WebSocket("ws://localhost:8080/", "echo-protocol")
+
+var buffer = '';
 socket.onopen = function (event) {
-  console.log(event);
-  socket.send('get-chat');
+  // console.log(document.getElementById('msg').innerHTML);
+  socket.send('<br>Connected!');
 }
 
 socket.onmessage = function (message) {
-  console.log(message.data);
+  // console.log(message.data);
+  document.getElementById('log').innerHTML = message.data;
+  buffer = message.data;
 }
 
 window.onkeydown = function(e) {
@@ -28,8 +33,11 @@ window.onkeydown = function(e) {
 window.myFunction = function(){
   if(document.getElementById('msg').value != ''){
     console.log(document.getElementById('msg').value);
-    socket.send(document.getElementById('msg').value);
-      document.getElementById('chatbox').innerHTML = document.getElementById('chatbox').innerHTML + '<br>' + document.getElementById('msg').value;
+    socket.send('<br>'+document.getElementById('msg').value+'');
+    
+    document.getElementById('msg').value= '';
+
+    document.getElementById("msg").focus();
   }
 
   return false;
