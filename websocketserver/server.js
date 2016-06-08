@@ -46,7 +46,7 @@ wsServer.on('request', function(request) {
             var dir = message.utf8Data;
             for(connected in connections){
                 console.log(connected.toString());
-                connected.sendUTF(dir);
+                connections[connected].sendUTF(dir);
             }
             //connection.sendUTF(dir);
         }
