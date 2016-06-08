@@ -55,6 +55,45 @@ function moveNewPosition(key){
 
 
 window.onkeydown = function(e) {
+<<<<<<< HEAD
+  var key = e.keyCode ? e.keyCode : e.which;
+
+  if (key == 38) {
+    console.log("up was pressed");
+    socket.send("up");
+  }else if (key == 40) {
+    console.log("down was pressed");
+    socket.send("down");
+  }else if (key == 13) {
+
+    document.getElementById("msg").focus();
+  }
+}
+
+window.myFunction = function(){
+  if(document.getElementById('msg').value != ''){
+    // console.log(document.getElementById('msg').value);
+    socket.send('<br>'+document.getElementById('msg').value+'');
+
+    document.getElementById('msg').value= '';
+
+    document.getElementById("msg").focus();
+  }
+
+  return false;
+}
+
+window.onload = function() {
+  document.getElementById("msg").focus();
+}
+
+function updateScroll() {
+  if(!scrolled) {
+    var element = document.getElementById('log');
+    element.scrollTop = element.scrollHeight;
+  }
+}
+=======
     var key = e.keyCode ? e.keyCode : e.which;
 
     switch(key){
@@ -76,36 +115,6 @@ window.onkeydown = function(e) {
         break;
     }
 
-    // focus on chat box on 'enter' keypress
-    if (key == 13) {
-      document.getElementById("msg").focus();
-    }
-
-}
-
-window.myFunction = function(){
-  if(document.getElementById('msg').value != ''){
-    socket.send('<br>'+document.getElementById('msg').value+'');
-
-    document.getElementById('msg').value= '';
-
-    document.getElementById("msg").focus();
-  }
-
-  return false; // to prevent page from refreshing after submitting form
-}
-
-// focus on chat box when window loads
-window.onload = function() {
-  document.getElementById("msg").focus();
-}
-
-// scrolls to the bottom of the chat log
-function updateScroll() {
-  if(!scrolled) {
-    var element = document.getElementById('log');
-    element.scrollTop = element.scrollHeight;
-  }
 }
 
 //animateDiv();
@@ -131,3 +140,4 @@ function updateScroll() {
 //    });  
 //};
 //
+>>>>>>> 43f875cb2a4043928c33847641e5e6cd81cb41bf
