@@ -4,15 +4,23 @@
 var socket = new WebSocket("ws://localhost:8080/", "echo-protocol")
 
 var buffer = '';
+var scrolled = false;
 socket.onopen = function (event) {
   // console.log(document.getElementById('msg').innerHTML);
   socket.send('<br>Connected!');
+
+
+  var objDiv = document.getElementById('log');
+  objDiv.scrollTop = objDiv.scrollHeight;
+  setInterval('updateScroll',1000);
 }
 
 socket.onmessage = function (message) {
   // console.log(message.data);
   document.getElementById('log').innerHTML = message.data;
   buffer = message.data;
+
+  updateScroll();
 }
 
 window.onkeydown = function(e) {
@@ -32,9 +40,9 @@ window.onkeydown = function(e) {
 
 window.myFunction = function(){
   if(document.getElementById('msg').value != ''){
-    console.log(document.getElementById('msg').value);
+    // console.log(document.getElementById('msg').value);
     socket.send('<br>'+document.getElementById('msg').value+'');
-    
+
     document.getElementById('msg').value= '';
 
     document.getElementById("msg").focus();
@@ -47,3 +55,9 @@ window.onload = function() {
   document.getElementById("msg").focus();
 }
 
+function updateScroll() {
+  if(!scrolled) {
+    var element = document.getElementById('log');
+    element.scrollTop = element.scrollHeight;
+  }
+}
