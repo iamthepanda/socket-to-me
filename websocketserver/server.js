@@ -44,9 +44,9 @@ wsServer.on('request', function(request) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             var dir = message.utf8Data;
-            for(var connected in connections) {
-                console.log(connected);
-               connections[connected].sendUTF(dir);
+            for(connected in connections){
+                console.log(connected.toString());
+                connected.sendUTF(dir);
             }
             //connection.sendUTF(dir);
         }
@@ -57,5 +57,7 @@ wsServer.on('request', function(request) {
     });
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+        var index = connections.indexOf(connection);
+        connections.splice(index, 1);
     });
 });
