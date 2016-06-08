@@ -5,45 +5,30 @@ socket.onopen = function (event) {
 }
 
 socket.onmessage = function (event) {
-  console.log(event + "awsdfhgjkl");
   $('#move').text(event.data);
-    
-  $("#move").animate({left: '+=50px'}, "slow");
-  console.log(event + "awsdfhgjkl222");
+    moveNewPosition(event.data);
     
 }
 
 // get values to animate
 
-//function makeNewPosition(inputArrow){
-//    
-//    // Get viewport dimensions (remove the dimension of the div)
-//    var h = $(window).height() - 100;
-//    var w = $(window).width() - 100;
-//    var nw = w;
-//    var nh = h;
-//    switch(inputArrow){
-//            //left key 37
-//        case "left":
-//            nw = w - 100;
-//            break;
-//            //up key 38
-//        case "up":
-//            nh = h + 100; 
-//            console.log("WERE IN UP")
-//            break;
-//            //right key 39
-//        case "right":
-//            nw = w + 100;
-//            break;
-//            //down key 40
-//        case "down":
-//            nh = h - 100;
-//            break;
-//    }
-//    
-//    return [nh,nw];      
-//}
+function moveNewPosition(key){
+    
+    switch (key){
+        case "left":
+            $("#move").animate({left: '-=50px'}, "slow");
+            break;
+        case "right":
+            $("#move").animate({left: '+=50px'}, "slow");
+            break;
+        case "up":
+            $("#move").animate({top: '-=50px'}, "slow");
+            break;
+        case "down":
+            $("#move").animate({top: '+=50px'}, "slow");
+            break; 
+    }
+}
 
 
 window.onkeydown = function(e) {
