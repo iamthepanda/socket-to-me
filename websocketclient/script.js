@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-// var socket = new WebSocket("ws://10.143.254.4:8080/", "echo-protocol")
-// var socket = new WebSocket("ws://10.143.183.69:8080/", "echo-protocol")
-// var socket = new WebSocket("ws://192.168.0.15:8080/", "echo-protocol")
-var socket = new WebSocket("ws://localhost:8080/", "echo-protocol")
+// var socket = new WebSocket("ws://localhost:8080/", "echo-protocol")
+var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
 
 var buffer = '';
 var scrolled = false;
-=======
-var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
->>>>>>> 43f875cb2a4043928c33847641e5e6cd81cb41bf
+
 socket.onopen = function (event) {
   // console.log(document.getElementById('msg').innerHTML);
   socket.send('<br>Connected!');
