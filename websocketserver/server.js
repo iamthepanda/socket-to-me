@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 var WebSocketServer = require('websocket').server;
 var http = require('http');
+var fs = require('fs');
 
+
+var buffer = fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+  if (err) {
+    throw err;
+  }
+  buffer = data;
+});
+// WriteFile();
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
@@ -37,17 +46,62 @@ wsServer.on('request', function(request) {
 
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
+
+        fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+          if (err) {
+            throw err;
+          }
+
+          buffer = data;
+            console.log("dkjbdfk");
+                connection.sendUTF(data);
+        });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             connection.sendUTF(message.utf8Data);
+            // fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+            //   if (err) {
+            //     throw err;
+            //   }
+            //   buffer = data;
+            // });
+
+            fs.readFile("log.txt", 'utf8', (err, data)=> {
+              if (err) {
+                throw err;
+              }
+            });
+            buffer += "\n" + message.utf8Data;
+            fs.writeFile("log.txt", buffer, function(err) {
+                if(err) {
+                    return console.log(err);
+                }
+            });
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
             connection.sendBytes(message.binaryData);
+
+            // fs.readFileSync("log.txt", 'binaryData', (err, data)=> {
+            //   if (err) {
+            //     throw err;
+            //   }
+            //   console.log(data);
+            //     fs.writeFile("log.txt", data + message.binaryData, function(err) {
+            //     if(err) {
+            //         return console.log(err);
+            //     }
+            // }); 
+            // });
+            
+        }
+        if(message.utf8Data == 'get-chat'){
+            connection.send("hsodfljhbvsdf");
         }
     });
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+
     });
 });
