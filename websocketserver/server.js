@@ -44,8 +44,10 @@ wsServer.on('request', function(request) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             var dir = message.utf8Data;
-            for(i in connections)
-                i.sendUTF(dir);
+            for(var connected in connections) {
+                console.log(connected);
+               connections[connected].sendUTF(dir);
+            }
             //connection.sendUTF(dir);
         }
         else if (message.type === 'binary') {
