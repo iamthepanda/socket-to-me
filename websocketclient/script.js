@@ -1,12 +1,13 @@
-// var socket = new WebSocket("ws://localhost:8080/", "direction-protocol")
-var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
+var socket = new WebSocket("ws://localhost:8080/", "direction-protocol")
+// var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
 
 var buffer = '';
 var scrolled = false;
+var repeatRateTimer = null;
 
 socket.onopen = function (event) {
   // console.log(document.getElementById('msg').innerHTML);
-  socket.send("<br>Connected!");
+  socket.send("");
 }
 
 // socket.onmessage = function (message) {
@@ -52,23 +53,31 @@ function moveNewPosition(key){
 window.onkeydown = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
 
-    switch(key){
-      case 37:
-        console.log("left was pressed");
-        socket.send("left");
-        break;
-      case 38:
-        console.log("up was pressed");
-        socket.send("up");
-        break;
-      case 39:
-        console.log("right was pressed");
-        socket.send("right");
-        break;
-      case 40:
-        console.log("down was pressed");
-        socket.send("down");
-        break;
+    if( repeatRateTimer == null )
+    {
+        repeatRateTimer = setTimeout( function( ) {
+            repeating = false;
+            clearTimeout( repeatRateTimer );
+            repeatRateTimer = null;
+        }, 500 );
+        switch(key){
+          case 37:
+            console.log("left was pressed");
+            socket.send("left");
+            break;
+          case 38:
+            console.log("up was pressed");
+            socket.send("up");
+            break;
+          case 39:
+            console.log("right was pressed");
+            socket.send("right");
+            break;
+          case 40:
+            console.log("down was pressed");
+            socket.send("down");
+            break;
+        }
     }
 
     // focus on chat box on 'enter' keypress
