@@ -1,5 +1,4 @@
-// var socket = new WebSocket("ws://localhost:8080/", "direction-protocol")
-var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
+var socket = new WebSocket("ws://"+ip+":8080/", "direction-protocol")
 
 var buffer = '';
 var scrolled = false;
