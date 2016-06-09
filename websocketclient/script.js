@@ -30,24 +30,26 @@ socket.onmessage = function (event) {
 }
 
 // get values to animate
-function blocking(){
-  block = true;
+function animateblock(direction){
+    $("#move").animate(direction, {duration: 50}, function(){
+      block = true;
+    });
 }
 
 function moveNewPosition(key){
   if (!block){
       switch (key){
           case "left":
-              $("#move").animate({left: '-=50px'}, "fast", blocking);
+              animateblock({left: '-=50px'});
               break;
           case "right":
-              $("#move").animate({left: '+=50px'}, "fast", blocking);
+              animateblock({left: '+=50px'});
               break;
           case "up":
-              $("#move").animate({top: '-=50px'}, "fast", blocking);
+              animateblock({top: '-=50px'});
               break;
           case "down":
-              $("#move").animate({top: '+=50px'}, "fast", blocking);
+              animateblock({top: '+=50px'});
               break; 
       }
   }
