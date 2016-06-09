@@ -1,6 +1,16 @@
 #!/usr/bin/env node
 var WebSocketServer = require('websocket').server;
 var http = require('http');
+var fs = require('fs');
+
+// load text from the log into buffer to send to the client
+var buffer = fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+  if (err) {
+    throw err;
+  }
+  buffer = data;
+});
+
 var connections = [];
 
 var server = http.createServer(function(request, response) {
@@ -40,6 +50,7 @@ wsServer.on('request', function(request) {
     connections.push(connection);
 
     console.log((new Date()) + ' Connection accepted.');
+
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
@@ -47,12 +58,34 @@ wsServer.on('request', function(request) {
             for(connected in connections){
                 console.log(connected.toString());
                 connections[connected].sendUTF(dir);
+
+                connections[connected].sendUTF(buffer);
+                if(message.utf8Data != 'left' && message.utf8Data !== 'right' && message.utf8Data !== 'up' && message.utf8Data !== 'down'){
+
+                    fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+                      if (err) {
+                        throw err;
+                      }
+                      buffer = data;
+                    });
+                    
+                    buffer += "\n" + message.utf8Data;
+                    fs.writeFile("log.txt", buffer, function(err) {
+                        if(err) {
+                            return console.log(err);
+                        }
+                    });
+                    connections[connected].sendUTF(buffer);
+                }
             }
             //connection.sendUTF(dir);
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
             connection.sendBytes(message.binaryData);
+        }
+        if(message.utf8Data == 'get-chat'){
+            connection.send(buffer);
         }
     });
     connection.on('close', function(reasonCode, description) {

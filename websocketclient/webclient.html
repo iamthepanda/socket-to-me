@@ -10,15 +10,23 @@
               position: absolute;
           }
       </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   </head>
   <body>
     <script src="script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-      <div id="container">
-        <div id = "move">
-        </div>
+    <div id="container">
+      <div id = "move">
       </div>
+    </div>
 
-  </body>
+		<div id="chatbox" style="position: fixed;bottom: 0;width: wrap-content;border-style:solid;padding:0px 5px 5px 5px;">
+			
+			<div id="log" style="height:200px;width:500px;overflow-y:scroll; word-wrap:break-word">
+			</div>
+			<form id="chat" name="message" action="" onSubmit="return myFunction();">
+				<input id="msg" name="usermsg" type="text" size="63" />
+				<input id="button" name="submitmsg" type="submit" value="Send" />
+			</form>
+		</div>
+	</body>
 </html>
-
