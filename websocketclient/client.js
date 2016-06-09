@@ -31,5 +31,4 @@ client.on('connect', function(connection) {
     sendNumber();
 });
 
-
 client.connect('ws://10.143.254.4:8080/', 'direction-protocol');
