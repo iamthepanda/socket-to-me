@@ -1,31 +1,31 @@
-// var socket = new WebSocket("ws://localhost:8080/", "echo-protocol")
-var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
+var socket = new WebSocket("ws://localhost:8080/", "direction-protocol")
+// var socket = new WebSocket("ws://10.143.35.126:8080/", "direction-protocol")
 
 var buffer = '';
 var scrolled = false;
 
 socket.onopen = function (event) {
   // console.log(document.getElementById('msg').innerHTML);
-  socket.send('<br>Connected!');
-
-
-  var objDiv = document.getElementById('log');
-  objDiv.scrollTop = objDiv.scrollHeight;
-  setInterval('updateScroll',1000);
+  socket.send("<br>Connected!");
 }
 
-socket.onmessage = function (message) {
-  // console.log(message.data);
-  document.getElementById('log').innerHTML = message.data;
-  buffer = message.data;
-
-  updateScroll();
-}
+// socket.onmessage = function (message) {
+//   // console.log(message.data);
+//   // document.getElementById('log').innerHTML = message.data;
+// }
 
 socket.onmessage = function (event) {
-  $('#move').text(event.data);
-    moveNewPosition(event.data);
-    
+  document.getElementById('log').innerHTML = message.data;
+  if(event.data=='right' || event.data=='left' || event.data=='up' || event.data=='down'){
+    $('#move').text(event.data);
+      moveNewPosition(event.data);
+  }
+  else {
+    buffer = event.data;
+    console.log(buffer);
+    document.getElementById('log').innerHTML = event.data;
+    updateScroll();
+  }
 }
 
 // get values to animate

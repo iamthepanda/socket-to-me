@@ -51,63 +51,38 @@ wsServer.on('request', function(request) {
 
     console.log((new Date()) + ' Connection accepted.');
 
-        // fs.readFileSync("log.txt", 'utf8', (err, data)=> {
-        //   if (err) {
-        //     throw err;
-        //   }
-
-        //   buffer = data;
-        //     console.log("dkjbdfk");
-        //         connection.sendUTF(data);
-        // });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
-            console.log('Received Message: ' + message.utf8Data);
-
-            fs.readFileSync("log.txt", 'utf8', (err, data)=> {
-              if (err) {
-                throw err;
-              }
-              buffer = data;
-            });
-
-            // fs.readFile("log.txt", 'utf8', (err, data)=> {
-            //   if (err) {
-            //     throw err;
-            //   }
-              // buffer +=data;
-            // });
-            buffer += "\n" + message.utf8Data;
-            fs.writeFile("log.txt", buffer, function(err) {
-                if(err) {
-                    return console.log(err);
-                }
-            });
-            connection.sendUTF(buffer);
-
             var dir = message.utf8Data;
             for(connected in connections){
                 console.log(connected.toString());
                 connections[connected].sendUTF(dir);
+
+                connections[connected].sendUTF(buffer);
+                if(message.utf8Data != 'left' && message.utf8Data !== 'right' && message.utf8Data !== 'up' && message.utf8Data !== 'down'){
+                    console.log('Received Message: ' + message.utf8Data);
+
+                    fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+                      if (err) {
+                        throw err;
+                      }
+                      buffer = data;
+                    });
+                    
+                    buffer += "\n" + message.utf8Data;
+                    fs.writeFile("log.txt", buffer, function(err) {
+                        if(err) {
+                            return console.log(err);
+                        }
+                    });
+                    connections[connected].sendUTF(buffer);
+                }
             }
             //connection.sendUTF(dir);
         }
         else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
             connection.sendBytes(message.binaryData);
-
-            // fs.readFileSync("log.txt", 'binaryData', (err, data)=> {
-            //   if (err) {
-            //     throw err;
-            //   }
-            //   console.log(data);
-            //     fs.writeFile("log.txt", data + message.binaryData, function(err) {
-            //     if(err) {
-            //         return console.log(err);
-            //     }
-            // }); 
-            // });
-            
         }
         if(message.utf8Data == 'get-chat'){
             connection.send(buffer);
