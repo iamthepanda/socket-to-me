@@ -53,6 +53,7 @@ wsServer.on('request', function(request) {
 
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
+            console.log('Received Message: ' + message.utf8Data);
             var dir = message.utf8Data;
             for(connected in connections){
                 console.log(connected.toString());
@@ -60,7 +61,6 @@ wsServer.on('request', function(request) {
 
                 connections[connected].sendUTF(buffer);
                 if(message.utf8Data != 'left' && message.utf8Data !== 'right' && message.utf8Data !== 'up' && message.utf8Data !== 'down'){
-                    console.log('Received Message: ' + message.utf8Data);
 
                     fs.readFileSync("log.txt", 'utf8', (err, data)=> {
                       if (err) {
