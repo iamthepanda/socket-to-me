@@ -3,7 +3,6 @@ var socket = new WebSocket("ws://"+ip+":8080/", "direction-protocol")
 var buffer = '';
 var scrolled = false;
 var repeatRateTimer = null;
-var blocking = false;
 
 socket.onopen = function (event) {
   socket.send("");
@@ -31,6 +30,7 @@ function animateblock(direction){
 }
 
 function moveNewPosition(key){
+  var blocking = false;
   if (!blocking){
       switch (key){
           case "left":
