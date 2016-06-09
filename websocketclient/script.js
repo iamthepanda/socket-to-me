@@ -5,14 +5,8 @@ var scrolled = false;
 var repeatRateTimer = null;
 
 socket.onopen = function (event) {
-  // console.log(document.getElementById('msg').innerHTML);
   socket.send("");
 }
-
-// socket.onmessage = function (message) {
-//   // console.log(message.data);
-//   // document.getElementById('log').innerHTML = message.data;
-// }
 
 socket.onmessage = function (event) {
   document.getElementById('log').innerHTML = message.data;
