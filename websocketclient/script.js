@@ -3,6 +3,7 @@ var socket = new WebSocket("ws://"+ip+":8080/", "direction-protocol")
 var buffer = '';
 var scrolled = false;
 var repeatRateTimer = null;
+var block = false;
 
 socket.onopen = function (event) {
   // console.log(document.getElementById('msg').innerHTML);
@@ -29,23 +30,28 @@ socket.onmessage = function (event) {
 }
 
 // get values to animate
+function blocking(){
+  block = true;
+}
 
 function moveNewPosition(key){
-    
-    switch (key){
-        case "left":
-            $("#move").animate({left: '-=50px'}, "slow");
-            break;
-        case "right":
-            $("#move").animate({left: '+=50px'}, "slow");
-            break;
-        case "up":
-            $("#move").animate({top: '-=50px'}, "slow");
-            break;
-        case "down":
-            $("#move").animate({top: '+=50px'}, "slow");
-            break; 
-    }
+  if (!block){
+      switch (key){
+          case "left":
+              $("#move").animate({left: '-=50px'}, "fast", blocking);
+              break;
+          case "right":
+              $("#move").animate({left: '+=50px'}, "fast", blocking);
+              break;
+          case "up":
+              $("#move").animate({top: '-=50px'}, "fast", blocking);
+              break;
+          case "down":
+              $("#move").animate({top: '+=50px'}, "fast", blocking);
+              break; 
+      }
+  }
+  block = false;
 }
 
 
