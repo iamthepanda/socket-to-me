@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<<<<<<< HEAD
+	<head>
+	</head>
+	<body>
+		<script src="script.js"></script>
+		<div id="chatbox">
+			
+			<div id="log" style="height:200px;width:500px;overflow-y:scroll; word-wrap:break-word">
+			</div>
+			<form id="chat" name="message" action="" onSubmit="return myFunction();">
+				<input id="msg" name="usermsg" type="text" size="63" />
+				<input id="button" name="submitmsg" type="submit"  id="submitmsg" value="Send" />
+			</form>
+=======
+  <head>
+      <style>
+          #move{
+              background:aqua;
+              width: 100px;
+              height: 100px;
+              border-radius: 10%;
+              position: absolute;
+          }
+      </style>
+  </head>
+  <body>
+    <script src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+      <div id="container">
+        <div id = "move">
+        </div>
+      </div>
+>>>>>>> 43f875cb2a4043928c33847641e5e6cd81cb41bf
+
+
+		</div>
+	</body>
+</html>
