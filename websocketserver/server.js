@@ -11,7 +11,8 @@ var buffer = fs.readFileSync("log.txt", 'utf8', (err, data)=> {
   buffer = data;
 });
 
-var connections = [];
+var id = 0;
+var players = [];
 
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
@@ -47,7 +48,9 @@ wsServer.on('request', function(request) {
     }
 
     var connection = request.accept('direction-protocol', request.origin);
-    connections.push(connection);
+    players.push({con:connection, id: id});
+    id++;
+    console.log(id);
 
     console.log((new Date()) + ' Connection accepted.');
 
@@ -66,19 +69,20 @@ wsServer.on('request', function(request) {
                     });
                     
                     buffer += "\n" + message.utf8Data;
+                }
+            for(connected in players){
+                console.log(connected.toString());
+                players[connected].con.sendUTF(dir);
+
+                if(message.utf8Data != 'left' && message.utf8Data !== 'right' && message.utf8Data !== 'up' && message.utf8Data !== 'down'){
+
                     fs.writeFile("log.txt", buffer, function(err) {
                         if(err) {
                             return console.log(err);
                         }
                     });
-                }
-            for(connected in connections){
-                console.log(connected.toString());
-                connections[connected].sendUTF(dir);
 
-                if(message.utf8Data != 'left' && message.utf8Data != 'right' && message.utf8Data != 'up' && message.utf8Data != 'down'){
-                    
-                    connections[connected].sendUTF(buffer);
+                    players[connected].con.sendUTF(buffer);
                 }
             }
             //connection.sendUTF(dir);
@@ -93,7 +97,7 @@ wsServer.on('request', function(request) {
     });
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
-        var index = connections.indexOf(connection);
-        connections.splice(index, 1);
+        var index = players.indexOf(connection);
+        players.splice(index, 1);
     });
 });
