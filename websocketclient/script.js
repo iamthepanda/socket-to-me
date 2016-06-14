@@ -9,14 +9,13 @@ socket.onopen = function (event) {
 }
 
 socket.onmessage = function (event) {
-  document.getElementById('log').innerHTML = message.data;
   if(event.data=='right' || event.data=='left' || event.data=='up' || event.data=='down'){
-    $('#move').text(event.data);
+    $('.move').text(event.data);
       moveNewPosition(event.data);
   }
   else {
+    document.getElementById('log').innerHTML = message.data;
     buffer = event.data;
-    console.log(buffer);
     document.getElementById('log').innerHTML = event.data;
     updateScroll();
   }
@@ -24,7 +23,7 @@ socket.onmessage = function (event) {
 
 // get values to animate
 function animateblock(direction){
-    $("#move").animate(direction, {duration: 50}, function(){
+    $(".move").animate(direction, {duration: 50}, function(){
       blocking = true;
     });
 }
@@ -34,16 +33,16 @@ function moveNewPosition(key){
   if (!blocking){
       switch (key){
           case "left":
-              animateblock({left: '-=50px'});
+              animateblock({x: '-=50px'});
               break;
           case "right":
-              animateblock({left: '+=50px'});
+              animateblock({x: '+=50px'});
               break;
           case "up":
-              animateblock({top: '-=50px'});
+              animateblock({y: '-=50px'});
               break;
           case "down":
-              animateblock({top: '+=50px'});
+              animateblock({y: '+=50px'});
               break; 
       }
   }
@@ -60,7 +59,7 @@ window.onkeydown = function(e) {
             repeating = false;
             clearTimeout( repeatRateTimer );
             repeatRateTimer = null;
-        }, 500 );
+        }, 100 );
         switch(key){
           case 37:
             console.log("left was pressed");
