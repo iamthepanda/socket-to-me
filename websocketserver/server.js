@@ -56,7 +56,7 @@ wsServer.on('request', function(request) {
             console.log('Received Message: ' + message.utf8Data);
             var dir = message.utf8Data;
 
-            if(message.utf8Data != 'left' && message.utf8Data !== 'right' && message.utf8Data !== 'up' && message.utf8Data !== 'down'){
+            if(message.utf8Data != 'left' && message.utf8Data != 'right' && message.utf8Data != 'up' && message.utf8Data != 'down'){
 
                     fs.readFileSync("log.txt", 'utf8', (err, data)=> {
                       if (err) {
@@ -66,18 +66,18 @@ wsServer.on('request', function(request) {
                     });
                     
                     buffer += "\n" + message.utf8Data;
-                }
-            for(connected in connections){
-                console.log(connected.toString());
-                connections[connected].sendUTF(dir);
-
-                if(message.utf8Data != 'left' && message.utf8Data !== 'right' && message.utf8Data !== 'up' && message.utf8Data !== 'down'){
-
                     fs.writeFile("log.txt", buffer, function(err) {
                         if(err) {
                             return console.log(err);
                         }
                     });
+                }
+            for(connected in connections){
+                console.log(connected.toString());
+                connections[connected].sendUTF(dir);
+
+                if(message.utf8Data != 'left' && message.utf8Data != 'right' && message.utf8Data != 'up' && message.utf8Data != 'down'){
+                    
                     connections[connected].sendUTF(buffer);
                 }
             }
@@ -87,9 +87,9 @@ wsServer.on('request', function(request) {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
             connection.sendBytes(message.binaryData);
         }
-        if(message.utf8Data == 'get-chat'){
-            connection.send(buffer);
-        }
+        // if(message.utf8Data == ''){
+        //     connection.send(buffer);
+        // }
     });
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
