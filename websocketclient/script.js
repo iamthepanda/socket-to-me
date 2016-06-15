@@ -102,7 +102,7 @@ window.myFunction = function(){
 
 // focus on chat box when window loads
 window.onload = function() {
-  document.getElementById("msg").focus();
+  // document.getElementById("msg").focus();
 }
 
 // scrolls to the bottom of the chat log
