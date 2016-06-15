@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://"+ip+":8080/", "direction-protocol")
-var chat = new WebSocket("ws://"+ip+":8081/", "direction-protocol")
+var chat = new WebSocket("ws://"+ip+":8082/", "direction-protocol")
 
 var buffer = '';
 var scrolled = false;

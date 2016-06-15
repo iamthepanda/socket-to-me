@@ -22,8 +22,8 @@ var wsChat = new WebSocketServer({
     autoAcceptConnections: false
 });
 
-chat.listen(8081, function() {
-    console.log((new Date()) + ' Server is listening on port 8081');
+chat.listen(8082, function() {
+    console.log((new Date()) + ' Server is listening on port 8082');
 });
 
 function originIsAllowed(origin) {

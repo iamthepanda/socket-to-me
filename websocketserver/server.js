@@ -3,14 +3,6 @@ var WebSocketServer = require('websocket').server;
 var http = require('http');
 var childProcess = require('child_process');
 
-// load text from the log into buffer to send to the client
-var buffer = fs.readFileSync("log.txt", 'utf8', (err, data)=> {
-  if (err) {
-    throw err;
-  }
-  buffer = data;
-});
-
 var id = 0;
 var players = [];
 
@@ -59,15 +51,6 @@ wsServer.on('request', function(request) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             var dir = message.utf8Data;
-
-            fs.readFileSync("log.txt", 'utf8', (err, data)=> {
-              if (err) {
-                throw err;
-              }
-              buffer = data;
-            });
-                    
-            buffer += "\n" + message.utf8Data;
                 
             for(connected in players){
                 console.log(connected.toString());
