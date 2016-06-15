@@ -3,7 +3,17 @@ var WebSocketServer = require('websocket').server;
 var http = require('http');
 var childProcess = require('child_process');
 
-var connections = [];
+// load text from the log into buffer to send to the client
+var buffer = fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+  if (err) {
+    throw err;
+  }
+  buffer = data;
+});
+
+var id = 0;
+var players = [];
+
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
@@ -39,7 +49,9 @@ wsServer.on('request', function(request) {
     }
 
     var connection = request.accept('direction-protocol', request.origin);
-    connections.push(connection);
+    players.push({con:connection, id: id});
+    id++;
+    console.log(id);
 
     console.log((new Date()) + ' Connection accepted.');
 
@@ -48,9 +60,18 @@ wsServer.on('request', function(request) {
             console.log('Received Message: ' + message.utf8Data);
             var dir = message.utf8Data;
 
-            for(connected in connections){
+            fs.readFileSync("log.txt", 'utf8', (err, data)=> {
+              if (err) {
+                throw err;
+              }
+              buffer = data;
+            });
+                    
+            buffer += "\n" + message.utf8Data;
+                
+            for(connected in players){
                 console.log(connected.toString());
-                connections[connected].sendUTF(dir);
+                players[connected].con.sendUTF(dir);
             }
         }
         else if (message.type === 'binary') {
@@ -60,8 +81,8 @@ wsServer.on('request', function(request) {
     });
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
-        var index = connections.indexOf(connection);
-        connections.splice(index, 1);
+        var index = players.indexOf(connection);
+        players.splice(index, 1);
     });
 });
 

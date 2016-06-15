@@ -2,3 +2,5 @@ websocketclient/config.js
 websocketclient/george.html
 websocketclient/index.html
 websocketserver/log.txt
+
+*.orig
