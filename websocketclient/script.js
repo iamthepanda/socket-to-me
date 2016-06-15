@@ -1,24 +1,25 @@
 var socket = new WebSocket("ws://"+ip+":8080/", "direction-protocol")
+var chat = new WebSocket("ws://"+ip+":8081/", "direction-protocol")
 
 var buffer = '';
 var scrolled = false;
 var repeatRateTimer = null;
 
-socket.onopen = function (event) {
-  socket.send("");
-}
-
 socket.onmessage = function (event) {
-  if(event.data=='right' || event.data=='left' || event.data=='up' || event.data=='down'){
     $('.move').text(event.data);
       moveNewPosition(event.data);
-  }
-  else {
-    document.getElementById('log').innerHTML = message.data;
+}
+
+chat.onopen = function (event) {
+  chat.send("");
+}
+
+chat.onmessage = function (event) {
+    document.getElementById('log').innerHTML = event.data;
     buffer = event.data;
     document.getElementById('log').innerHTML = event.data;
     updateScroll();
-  }
+      console.log(event);
 }
 
 // get values to animate
@@ -89,7 +90,7 @@ window.onkeydown = function(e) {
 
 window.myFunction = function(){
   if(document.getElementById('msg').value != ''){
-    socket.send('<br>'+document.getElementById('msg').value+'');
+    chat.send(document.getElementById('msg').value);
 
     document.getElementById('msg').value= '';
 
@@ -111,27 +112,3 @@ function updateScroll() {
     element.scrollTop = element.scrollHeight;
   }
 }
-
-//animateDiv();
-//
-//
-//function makeNewPosition(){
-//    
-//    // Get viewport dimensions (remove the dimension of the div)
-//    var h = $(window).height() - 50;
-//    var w = $(window).width() - 50;
-//    
-//    var nh = Math.floor(Math.random() * h);
-//    var nw = Math.floor(Math.random() * w);
-//    
-//    return [nh,nw];    
-//    
-//}
-//
-//function animateDiv(){
-//    var newq = makeNewPosition();
-//    $('#move').animate({ top: newq[0], left: newq[1] }, function(){
-//      animateDiv();        
-//    });  
-//};
-//
